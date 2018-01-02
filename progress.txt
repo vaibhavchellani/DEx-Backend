@@ -1,0 +1,3 @@
+this document has my thought process while working
+
+so first lets make a route to return hey
