@@ -1,3 +1,20 @@
 this document has my thought process while working
 
 so first lets make a route to return hey
+models have been created
+
+one doubt is how are they getting the transaction after it is mined ? probably etherscan
+
+second it find out when they are hitting events end point
+what is return ticker being used for .
+
+
+so we are accepting only one thing that is order model
+
+the orders endpoint gives out buy order and sell order both , it is used to get orders for a given token
+
+orders are the fulfilled orders
+
+top orders are the pending orders
+
+finally clear ho hi gya !

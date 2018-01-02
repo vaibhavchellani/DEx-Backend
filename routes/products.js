@@ -23,7 +23,7 @@ router.get('/:id', function(req, res, next) {
 router.post('/', function(req, res, next) {
     console.log(req.body.prod_name);
     Product.create(req.body, function (err, post) {
-        if (err) return next(err);
+        if (err) return next(err)
         res.json(post);
     });
 });
