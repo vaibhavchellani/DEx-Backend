@@ -1,9 +1,21 @@
 var express = require('express');
 var app = express();
+var mongoose = require('mongoose');
+var bodyParser = require('body-parser')
+mongoose.Promise = global.Promise;
+
+mongoose.connect('mongodb://localhost:27017/exchange_api')
+    .then(() =>  console.log('connection succesful'))
+.catch((err) => console.error(err));
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+var products = require('./products');
+app.use('/products', products);
 
 var returnticker = require('./returnticker.js');
-
-//both index.js and router.js should be in same directory
 app.use('/returnticker', returnticker);
+
 
 app.listen(3000);
