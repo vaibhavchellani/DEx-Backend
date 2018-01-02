@@ -22,8 +22,15 @@ router.get('/:id', function(req, res, next) {
 /* SAVE PRODUCT */
 router.post('/', function(req, res, next) {
     console.log(req.body.prod_name);
-    Product.create(req.body, function (err, post) {
-        if (err) return next(err)
+    var item ={
+        prod_name:req.body.prod_name,
+        prod_desc:"yo",
+        prod_price:12
+
+    };
+    Product.create(item, function (err, post) {
+        if (err) return next(err);
+
         res.json(post);
     });
 });

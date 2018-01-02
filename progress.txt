@@ -9,12 +9,18 @@ second it find out when they are hitting events end point
 what is return ticker being used for .
 
 
-so we are accepting only one thing that is order model
-
-the orders endpoint gives out buy order and sell order both , it is used to get orders for a given token
-
+the orders endpoint gives out buy order and sell order both , it is used to get orders for a given tokens
+toporders gives out all orders irrespective of token , then those orders are filtered at front end , probably
+********
 orders are the fulfilled orders
 
 top orders are the pending orders
-
+********
 finally clear ho hi gya !
+
+
+top order response analysis
+
+bc , every order has same token get , so how do we know whether the order buy order or sell order ? oh !
+so each order has an id which has either '_buy' or '_sell'.
+amount is -ve when user wants to sell

@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
-var Order =require('Order')
+var Order =require('./Order')
 var OrderOverviewSchema = new mongoose.Schema({
 
     amount: String,
     price: String,
     id: String,
-    order:Order,
+    //order:Order,
     updated : { type: Date, default: Date.now },
     submitted :{type:Date},
     availableVolume : String,
