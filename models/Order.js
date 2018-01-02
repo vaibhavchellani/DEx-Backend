@@ -1,11 +1,23 @@
 var mongoose = require('mongoose');
 
-var ProductSchema = new mongoose.Schema({
-    // to change 
-    prod_name: String,
-    prod_desc: String,
-    prod_price: Number,
-    updated_at: { type: Date, default: Date.now },
+var OrderSchema = new mongoose.Schema({
+    // to change
+    //updated_at: { type: Date, default: Date.now },
+
+    contractAddress: String,
+    tokenGet: String,
+    amountGet: String,
+    tokenGive: String,
+    amountGive: String,
+    expires: String,
+    nonce: String,
+    v: String,
+    s: String,
+    r: String,
+    user:String,
+
+
+
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model('Order', OrderSchema);
