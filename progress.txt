@@ -24,3 +24,53 @@ top order response analysis
 bc , every order has same token get , so how do we know whether the order buy order or sell order ? oh !
 so each order has an id which has either '_buy' or '_sell'.
 amount is -ve when user wants to sell
+
+
+yeah so its working we can form an item then push it to the collection, great !
+ okay so ticker is nothing but the latest voyeah lume added
+
+ issues right now - how to find out price
+ -id of order is probably random with _buy or _sell suffix
+ -rest of order is same as received
+ -updated fi
+
+ how to find out if the submitted order is buy or sell !!!!!
+
+ yeah so last i knew we had to do 10 to power -6 or something to get the price and volume and that sort of stuff , today we finish off chain order book
+ tomorrow we can see events and stuff
+
+ okay so problem one is how to get decimals for a token
+ solution : get abi from etherscan api -> get token address -> make web3 object -> query decimal()-> get ethprice -> divide by ethpricebase and get normal price
+
+ sell order - price = ethAvailableVolumeBase/ethAvailableVolume
+ ethAvailableVolumeBase= availableVolumeBase*10 to power -18
+ ethAvailableVolume= availableVolume*10 to power -(number of decimals)
+
+ okay so probably when a buy order is placed then the sell order is placed, the order object is simply copied . we have to follow logic from /orders
+
+ making of logic now **
+ ******I guess orders is for getting orders , top orders is for getting em in a sorted way , but how do they know which are open orders which are closed
+
+
+BUY ORDER:
+amount: message.amountGet,
+      price: message.amountGive
+        .div(message.amountGet)
+        .mul(API.getDivisor(message.tokenGet))
+        .div(API.getDivisor(message.tokenGive)),
+      id: `${id}_buy`,
+      order: message,
+
+SELL ORDER:
+amount: -message.amountGive,
+      price: message.amountGet
+        .div(message.amountGive)
+        .mul(API.getDivisor(message.tokenGive))
+        .div(API.getDivisor(message.tokenGet)),
+      id: `${id}_sell`,
+      order: message,
+      updated: undefined,
+
+
+ so today we have finalised some things like how were things like available volume and all being calculated , we also found how to publish orders with api .
+ currently trying to make api using api.js as reference . have to create utility.js for common things .
