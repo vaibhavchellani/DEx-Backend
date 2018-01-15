@@ -135,7 +135,8 @@ function formOrder(req){
 }
 function getOrderParams(orderIn,availableVolume) {
     var order=orderIn;
-    availableVolume=new BigNumber(1000000000000000000);
+    availableVolume=new BigNumber(4750000);
+    availableVolume = getAvailableVolume();
     console.log('inside getOrderParams with input order as'+order);
     if (order.amount >= 0) {
         console.log('inside if of getOrderParams');
@@ -181,6 +182,7 @@ function getOrderParams(orderIn,availableVolume) {
 }
 function getAvailableVolume()
 {
+    
 
 }
 function weiToEth(wei, divisorIn) {

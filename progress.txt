@@ -71,6 +71,5 @@ amount: -message.amountGive,
       order: message,
       updated: undefined,
 
+the values are being created incorrectly have a look at that , getavailable volume too
 
- so today we have finalised some things like how were things like available volume and all being calculated , we also found how to publish orders with api .
- currently trying to make api using api.js as reference . have to create utility.js for common things .
