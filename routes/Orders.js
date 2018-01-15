@@ -1,20 +1,17 @@
+/**
+ *
+ * for getting all orders for a particular token pair
+ */
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var OrderOverview = require('../models/Order.js');
+var Order = require('../models/Order.js');
 
-/* GET all top orders */
-router.get('/', function(req, res, next) {
-    OrderOverview.find(function (err, products) {
+/* GET all orders for the given pair */
+router.get('/{TokenA}/{TokenB}', function(req, res, next) {
+    Order.find(function (err, products) {
         if (err) return next(err);
         res.json(products);
-    });
-});
-router.post('/',function (req,res,next) {
-
-    OrderOverview.create(req.body, function (err, post) {
-        if (err) return next(err);
-        res.json(post);
     });
 });
 

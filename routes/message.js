@@ -24,18 +24,7 @@ router.post('/',function (req,res,next) {
         //var ABI=JSON.parse(data.body).result;
         //console.log(ABI.toArray());
     });*/
-    var item= formOrder(req);
-    console.log('returned item to be pushed to DB is '+item);
-    //var result=getDivisor('0x86fa049857e0209aa7d9e616f7eb3b3b78ecfdb0');
-    //console.log(result);
-    //console.log(utility.weiToEth(1000000,10));
-
-    var Order=require('../models/Order');
-        Order.create(item,function (err,post) {
-           if(err) throw err;
-           res.json(post);
-
-        });
+    formOrder(req);
 
 });
 
@@ -65,7 +54,7 @@ function getDivisor(tokenOrAddress) {
     return new BigNumber(result);
 }
 function formOrder(req){
-    console.log(req.body);
+    console.log('Inside Form order the recieved body is'.req.body);
     if(req.body.tokenGet=='0x0000000000000000000000000000000000000000' && req.body.tokenGive!='0x0000000000000000000000000000000000000000') {
         direction = 'sell';
     }
@@ -117,19 +106,22 @@ function formOrder(req){
         } ,
 
     };
-    var sendOrder={};
-    if(direction==='buy'){
-        console.log('buy order to be sent');
-        sendOrder=buyOrder;
-    } else if(direction==='sell'){
-        console.log('sell order to be sent');
-        sendOrder=sellOrder;
-    }
+    var newOrder={};
+     newOrder=getOrderParams(buyOrder,100);
+    var Order=require('../models/Order');
+    console.log('Buy order sent from FormOrder');
+    Order.create(newOrder,function (err,post) {
+        if(err) throw err;
+        res.json(post);
 
-    console.log(sendOrder);
-    var newOrder=getOrderParams(sendOrder,100);
-    console.log(newOrder);
-    return newOrder;
+    });
+     newOrder=getOrderParams(sellOrder,100);
+    console.log('Sell order sent from FormOrder');
+    Order.create(newOrder,function (err,post) {
+        if(err) throw err;
+        res.json(post);
+
+    });
 
 
 }
