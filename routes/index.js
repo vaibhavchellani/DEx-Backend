@@ -27,4 +27,4 @@ app.use('/message',message);
 
 // we need an events route
 
-app.listen(6000);
+app.listen(3000);

@@ -74,4 +74,6 @@ amount: -message.amountGive,
 the values are being created incorrectly have a look at that , getavailable volume too
  understanding main.js and documenting for now , each function
 now i understand the sell order for me is the buy order for someone else , hence its needed to maintain a record for both
-which one to show but , where the buy/sell order is mismatch !
+which one to show but ? where the buy/sell order is mismatch !
+
+getavailablevolume to be made

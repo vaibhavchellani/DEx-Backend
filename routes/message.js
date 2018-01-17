@@ -24,7 +24,7 @@ router.post('/',function (req,res,next) {
         //var ABI=JSON.parse(data.body).result;
         //console.log(ABI.toArray());
     });*/
-    formOrder(req);
+    formOrder(req,res);
 
 });
 
@@ -53,8 +53,8 @@ function getDivisor(tokenOrAddress) {
     }
     return new BigNumber(result);
 }
-function formOrder(req){
-    console.log('Inside Form order the recieved body is'.req.body);
+function formOrder(req,res){
+    console.log('Inside Form order the recieved body is'+req.body);
     if(req.body.tokenGet=='0x0000000000000000000000000000000000000000' && req.body.tokenGive!='0x0000000000000000000000000000000000000000') {
         direction = 'sell';
     }
@@ -107,30 +107,32 @@ function formOrder(req){
 
     };
     var newOrder={};
-     newOrder=getOrderParams(buyOrder,100);
+    newOrder=getOrderParams(buyOrder,100);
     var Order=require('../models/Order');
     console.log('Buy order sent from FormOrder');
     Order.create(newOrder,function (err,post) {
         if(err) throw err;
-        res.json(post);
-
+        console.log("buy order sent is "+post)
     });
-     newOrder=getOrderParams(sellOrder,100);
+    newOrder=getOrderParams(sellOrder,100);
     console.log('Sell order sent from FormOrder');
     Order.create(newOrder,function (err,post) {
         if(err) throw err;
-        res.json(post);
+        console.log("sell order sent is "+post);
 
     });
+
+    res.json("success");
 
 
 }
 function getOrderParams(orderIn,availableVolume) {
     var order=orderIn;
-    availableVolume=new BigNumber(4750000);
-    availableVolume = getAvailableVolume();
+    availableVolume=new BigNumber(order.order.amountGet);
+
     console.log('inside getOrderParams with input order as'+order);
     if (order.amount >= 0) {
+
         console.log('inside if of getOrderParams');
         order.price = new BigNumber(order.order.amountGive)
             .div(new BigNumber(order.order.amountGet))
@@ -150,6 +152,7 @@ function getOrderParams(orderIn,availableVolume) {
             getDivisor(order.order.tokenGive));
     }
     else {
+
         console.log('inside else of getOrderParams');
         order.price = new BigNumber(order.order.amountGet)
             .div(new BigNumber(order.order.amountGive))
@@ -160,6 +163,7 @@ function getOrderParams(orderIn,availableVolume) {
             .div(order.price)
             .mul(getDivisor(order.order.tokenGive))
             .div(getDivisor(order.order.tokenGet));
+        //order.availableVolume=availableVolume;
         order.ethAvailableVolume = utility.weiToEth(
             Math.abs(order.availableVolume),
             getDivisor(order.order.tokenGive));
@@ -182,7 +186,6 @@ function weiToEth(wei, divisorIn) {
     return (wei / divisor).toFixed(3);
 }
 function getToken(token_address){
-    console.log('inside get token');
     let result;
 
     const matchingTokens = config.tokens.filter(
@@ -193,12 +196,10 @@ function getToken(token_address){
         'name',
     ]);
     //matchingTokens++;
-    console.log(config.tokens.filter(x=>x.addr==token_address));
     //console.log('matching tokens'+matchingTokens);
     //console.log('matching token found '+matchingTokens[0]+' '+matchingTokens.length+' '+matchingTokens);
     if (matchingTokens.length > 0) {
         result = matchingTokens[0];
-        console.log('inside if of getToken');
     } else if (token_address.addr && JSON.stringify(Object.keys(token_address).sort()) === expectedKeys) {
         result = token_address;
     }
