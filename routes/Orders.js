@@ -12,11 +12,16 @@ router.get('/:tokena/:tokenb', function(req, res, next) {
 
     Order.find({
         $or : [
-            { $and : [ {"order.tokenGet":req.params.tokena} , {"order.tokenGive":req.params.tokenb} ] },
-            { $and : [ {"order.tokenGet":req.params.tokenb} , {"order.tokenGive":req.params.tokena}]  }
+            { $and : [ {"order.tokenGet":req.params.tokena} , {"order.tokenGive":req.params.tokenb}] },
+            { $and : [ {"order.tokenGet":req.params.tokenb} , {"order.tokenGive":req.params.tokena}] }
         ]
     },function (err,post) {
         if(err) throw err;
+        var result=[];
+        /*forEach(x in post)
+        {
+            result.push()
+        }*/
         res.json(post);
 
     })
