@@ -45,7 +45,6 @@ function getDivisor(tokenOrAddress) {
     } else {
         console.log("Error" );
     }*/
-    console.log('inside get divisor');
     let result = 1000000000000000000;
     const token =getToken(tokenOrAddress);
     if (token && token.decimals >= 0) {
@@ -54,7 +53,6 @@ function getDivisor(tokenOrAddress) {
     return new BigNumber(result);
 }
 function formOrder(req,res){
-    console.log('Inside Form order the recieved body is'+req.body);
     if(req.body.tokenGet=='0x0000000000000000000000000000000000000000' && req.body.tokenGive!='0x0000000000000000000000000000000000000000') {
         direction = 'sell';
     }
@@ -109,13 +107,17 @@ function formOrder(req,res){
     var newOrder={};
     newOrder=getOrderParams(buyOrder,100);
     var Order=require('../models/Order');
+/*
     console.log('Buy order sent from FormOrder');
+*/
     Order.create(newOrder,function (err,post) {
         if(err) throw err;
         console.log("buy order sent is "+post)
     });
     newOrder=getOrderParams(sellOrder,100);
+/*
     console.log('Sell order sent from FormOrder');
+*/
     Order.create(newOrder,function (err,post) {
         if(err) throw err;
         console.log("sell order sent is "+post);
@@ -130,10 +132,14 @@ function getOrderParams(orderIn,availableVolume) {
     var order=orderIn;
     availableVolume=new BigNumber(order.order.amountGet);
 
+/*
     console.log('inside getOrderParams with input order as'+order);
+*/
     if (order.amount >= 0) {
 
+/*
         console.log('inside if of getOrderParams');
+*/
         order.price = new BigNumber(order.order.amountGive)
             .div(new BigNumber(order.order.amountGet))
             .mul(getDivisor(order.order.tokenGet))
@@ -153,7 +159,9 @@ function getOrderParams(orderIn,availableVolume) {
     }
     else {
 
+/*
         console.log('inside else of getOrderParams');
+*/
         order.price = new BigNumber(order.order.amountGet)
             .div(new BigNumber(order.order.amountGive))
             .mul(getDivisor(order.order.tokenGive))
@@ -205,61 +213,5 @@ function getToken(token_address){
     }
     return result;
 }
-/*function getAvailableVolume()
-{
-    const data = contract[functionName].getData.apply(null, args);
-    let url =
-    `https://${
-        config.ethTestnet ? config.ethTestnet : 'api'
-        }.etherscan.io/api?module=proxy&action=eth_Call&to=${
-        address
-        }&data=${
-        data}`;
-    if (config.etherscanAPIKey) url += `&apikey=${config.etherscanAPIKey}`;
-    utility.getURL(url, (err, body) => {
-        if (!err) {
-            try {
-                const result = JSON.parse(body);
-                const functionAbi = contract.abi.find(element => element.name === functionName);
-                const solidityFunction = new SolidityFunction(web3.Eth, functionAbi, address);
-                const resultUnpacked = solidityFunction.unpackOutput(result.result);
-                callback(undefined, resultUnpacked);
-            } catch (errJson) {
-                if (retries > 0) {
-                    setTimeout(() => {
-                        proxy(retries - 1);
-                    }, 1000);
-                } else {
-                    callback(err, undefined);
-                }
-            }
-        } else {
-            callback(err, undefined);
-        }
-    });
-}
-try {
-    if (web3In.currentProvider) {
-        const data = contract[functionName].getData.apply(null, args);
-        web3In.eth.call({ to: address, data }, (err, result) => {
-            if (!err) {
-                const functionAbi = contract.abi.find(element => element.name === functionName);
-                const solidityFunction = new SolidityFunction(web3In.Eth, functionAbi, address);
-                try {
-                    const resultUnpacked = solidityFunction.unpackOutput(result);
-                    callback(undefined, resultUnpacked);
-                } catch (errJson) {
-                    proxy(1);
-                }
-            } else {
-                proxy(1);
-            }
-        });
-    } else {
-        proxy(1);
-    }
-} catch (err) {
-    proxy(1);
-}*/
 
 module.exports=router;

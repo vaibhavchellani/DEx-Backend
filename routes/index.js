@@ -18,8 +18,8 @@ var returnticker = require('./returnticker.js');
 app.use('/returnticker', returnticker);
 
 // This route is get only , returns all pending orders
-var order_overview=require('./Orders.js');
-app.use('/toporders',order_overview);direction=null;
+var order=require('./Orders.js');
+app.use('/orders',order);
 
 // This is post only route
 var message =require('./message.js');

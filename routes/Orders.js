@@ -8,11 +8,18 @@ var mongoose = require('mongoose');
 var Order = require('../models/Order.js');
 
 /* GET all orders for the given pair */
-router.get('/{TokenA}/{TokenB}', function(req, res, next) {
-    Order.find(function (err, products) {
-        if (err) return next(err);
-        res.json(products);
-    });
+router.get('/:tokena/:tokenb', function(req, res, next) {
+
+    Order.find({
+        $or : [
+            { $and : [ {"order.tokenGet":req.params.tokena} , {"order.tokenGive":req.params.tokenb} ] },
+            { $and : [ {"order.tokenGet":req.params.tokenb} , {"order.tokenGive":req.params.tokena}]  }
+        ]
+    },function (err,post) {
+        if(err) throw err;
+        res.json(post);
+
+    })
 });
 
 module.exports = router;
