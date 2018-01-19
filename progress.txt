@@ -77,3 +77,28 @@ now i understand the sell order for me is the buy order for someone else , hence
 which one to show but ? where the buy/sell order is mismatch !
 
 getavailablevolume to be made
+
+right now partial orders cant be made coz we are not getting available Volume from contract , right now we are assuming the order gets fully filled
+toporders is exactly how it should be
+order may need some hacking
+
+order has one confusion , in the front end i can see there is no sorting for correct orders , do i have to sort order from backend and send or not
+i cannot see any sorting for toporders too , but since toporder is proably used only for volumes there is no nee
+
+api enpoints that are left are
+/events and /returnticker
+
+
+/events would be creative .. seeing
+
+some questions for today , what is the use of blocknumber in the order and toporder api
+so found the error have to return one order and blocknumber and then the orders inside the order
+
+yay !!!! order and toporders working perfectly !!!!
+just have to figure out the follwing things in order
+1. how events are working
+2. do i have to submit order from event
+3. what does the blocknumber in the order and toporder do
+4. getavailablevolume in /message.
+
+GET ON IT !

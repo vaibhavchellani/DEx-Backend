@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
+var cors = require('cors');
 var bodyParser = require('body-parser')
 mongoose.Promise = global.Promise;
 
@@ -8,6 +9,8 @@ mongoose.connect('mongodb://localhost:27017/exchange_api')
     .then(() =>  console.log('connection succesful'))
     .catch((err) => console.error(err));
 
+
+app.use(cors());
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 //test route
@@ -29,4 +32,4 @@ var toporder=require('./toporders.js');
 app.use('/toporders',toporder);
 // we need an events route
 
-app.listen(3000);
+app.listen(9000);

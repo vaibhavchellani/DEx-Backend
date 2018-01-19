@@ -8,9 +8,11 @@ var mongoose = require('mongoose');
 var Order = require('../models/Order.js');
 
 /* GET all orders for the given pair */
-router.get('/', function(req, res, next) {
+router.get('/:nonce', function(req, res, next) {
     Order.find(function (err,post) {
-        res.json(post);
+
+        var item={orders:post,blockNumber:4799466};
+        res.json(item);
     })
 });
 

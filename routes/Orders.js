@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 var Order = require('../models/Order.js');
 
 /* GET all orders for the given pair */
-router.get('/:tokena/:tokenb', function(req, res, next) {
+router.get('/:nonce/:tokena/:tokenb', function(req, res, next) {
 
     Order.find({
         $or : [
@@ -22,7 +22,8 @@ router.get('/:tokena/:tokenb', function(req, res, next) {
         {
             result.push()
         }*/
-        res.json(post);
+        var item={orders:post,blockNumber:4799466};
+        res.json(item);
 
     })
 });
