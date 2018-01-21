@@ -12,7 +12,6 @@ var ethAvailableVolumeBase=0;
 var availableVolume=0;
 var ethAvailableVolume=0;
 var price=0;
-var direction='none';
 var amount=0;
 var config = require('../resources/config.js');
 var ABI=[{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_amount","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"totalSupply","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_amount","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"balance","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_amount","type":"uint256"}],"name":"transfer","outputs":[{"name":"success","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"remaining","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":false,"stateMutability":"nonpayable","type":"fallback"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}];
@@ -29,78 +28,68 @@ router.post('/',function (req,res,next) {
 });
 
 function getDivisor(tokenOrAddress) {
-    /*if (ABI!=null){
-        var MyContract = web3.eth.contract(ABI);
-        if(req.body.tokenGet!='0x0000000000000000000000000000000000000000')
-            var myContractInstance = MyContract.at(req.body.tokenGet.toString());
-        else if(req.body.tokenGive!='0x0000000000000000000000000000000000000000')
-            var myContractInstance = MyContract.at(req.body.tokenGive.toString());
-        else
-            throw "invalid address pair";
 
-        decimal = myContractInstance.decimals();
-
-        console.log(parseInt(decimal.toPrecision()) + typeof parseInt(decimal.toPrecision()));
-
-    } else {
-        console.log("Error" );
-    }*/
     let result = 1000000000000000000;
     const token =getToken(tokenOrAddress);
+    console.log("from get divisor , token from getToekn"+token);
     if (token && token.decimals >= 0) {
         result = Math.pow(10, token.decimals); // eslint-disable-line no-restricted-properties
     }
     return new BigNumber(result);
 }
 function formOrder(req,res){
+    /*var direction=null;
+    console.log("req.body is "+JSON.stringify(req.body));
     if(req.body.tokenGet=='0x0000000000000000000000000000000000000000' && req.body.tokenGive!='0x0000000000000000000000000000000000000000') {
         direction = 'sell';
     }
     else if(req.body.tokenGet!='0x0000000000000000000000000000000000000000' && req.body.tokenGive=='0x0000000000000000000000000000000000000000'){
         direction='buy';
     }
-    console.log('direction determined to be '+direction);
+    console.log('direction determined to be '+direction);*/
     const id = sha256(Math.random().toString());
+    console.log("this is req"+JSON.stringify(req.body));
+    var request=JSON.parse(req.body.message);
     const buyOrder = {
-        amount: req.body.amountGet,
-        price: new BigNumber(req.body.amountGive)
-            .div(req.body.amountGet)
-            .mul(getDivisor(req.body.tokenGet))
-            .div(getDivisor(req.body.tokenGive)),
+        amount: request.amountGet,
+        price: new BigNumber(parseInt(request.amountGive))
+            .div(parseInt(request.amountGive))
+            .mul(getDivisor(request.tokenGet))
+            .div(getDivisor(request.tokenGive)),
         id: `${id}_buy`,
         order: {
-            contractAddr: req.body.contractAddr,
-            tokenGet: req.body.tokenGet,
-            amountGet: req.body.amountGet,
-            tokenGive: req.body.tokenGive,
-            amountGive: req.body.amountGive,
-            expires: req.body.expires,
-            nonce: req.body.nonce,
-            v: req.body.v,
-            s: req.body.s,
-            r: req.body.r,
-            user: req.body.user,
+            contractAddr: request.contractAddr,
+            tokenGet: request.tokenGet,
+            amountGet: request.amountGet,
+            tokenGive: request.tokenGive,
+            amountGive: request.amountGive,
+            expires: request.expires,
+            nonce: request.nonce,
+            v: request.v.toString(),
+            s: request.s,
+            r: request.r,
+            user: request.user,
         },
     };
     const sellOrder = {
-        amount: -req.body.amountGive,
-        price: new BigNumber(req.body.amountGet)
-            .div(req.body.amountGive)
-            .mul(getDivisor(req.body.tokenGive))
-            .div(getDivisor(req.body.tokenGet)),
+        amount: -request.amountGive,
+        price: new BigNumber(request.amountGet)
+            .div(request.amountGive)
+            .mul(getDivisor(request.tokenGive))
+            .div(getDivisor(request.tokenGet)),
         id: `${id}_sell`,
         order:{
-            contractAddr: req.body.contractAddr,
-            tokenGet: req.body.tokenGet,
-            amountGet: req.body.amountGet,
-            tokenGive: req.body.tokenGive,
-            amountGive: req.body.amountGive,
-            expires: req.body.expires,
-            nonce: req.body.nonce,
-            v: req.body.v,
-            s: req.body.s,
-            r: req.body.r,
-            user: req.body.user,
+            contractAddr: request.contractAddr,
+            tokenGet: request.tokenGet,
+            amountGet: request.amountGet,
+            tokenGive: request.tokenGive,
+            amountGive: request.amountGive,
+            expires: request.expires,
+            nonce: request.nonce,
+            v: request.v.toString(),
+            s: request.s,
+            r: request.r,
+            user: request.user,
         } ,
 
     };
@@ -195,7 +184,7 @@ function weiToEth(wei, divisorIn) {
 }
 function getToken(token_address){
     let result;
-
+    console.log("got this token address from getdivisor"+token_address);
     const matchingTokens = config.tokens.filter(
         x => x.addr === token_address);
     const expectedKeys = JSON.stringify([
@@ -204,12 +193,16 @@ function getToken(token_address){
         'name',
     ]);
     //matchingTokens++;
-    //console.log('matching tokens'+matchingTokens);
-    //console.log('matching token found '+matchingTokens[0]+' '+matchingTokens.length+' '+matchingTokens);
+    console.log('matching tokens'+matchingTokens);
+    console.log('matching token found '+matchingTokens[0]+' '+matchingTokens.length+' '+matchingTokens);
     if (matchingTokens.length > 0) {
         result = matchingTokens[0];
-    } else if (token_address.addr && JSON.stringify(Object.keys(token_address).sort()) === expectedKeys) {
+    } /*else if (token_address.addr && JSON.stringify(Object.keys(token_address).sort()) === expectedKeys) {
+        console.log("dude it went into else , means given token was not found , checkout line 198");
         result = token_address;
+    }*/
+    else{
+        console.log('dude it went into else , it wasnt supposed to , i know ! check line 202');
     }
     return result;
 }
