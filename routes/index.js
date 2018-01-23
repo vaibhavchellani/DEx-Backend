@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var cors = require('cors');
 var bodyParser = require('body-parser');
 var Web3 = require('web3');
+var utility=require('../resources/utility');
 
 /*var web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/9c53Bai0EYh4fbE7elEE'));*/
 //this is ropsten address
@@ -32,41 +33,18 @@ app.use(cors());
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
+//todo change to mainnet address
 var exchange_contract=exchange_contract_abi.at('0x228344536a03c0910fb8be9c2755c1a0ba6f89e1');
 var Order_event=exchange_contract.Order();
 var Deposit_event=exchange_contract.Deposit();
 var Withdraw_event=exchange_contract.Withdraw();
 var Cancel_event=exchange_contract.Cancel();
 var Trade_event=exchange_contract.Trade();
-console.log(exchange_contract.feeMake.call());
-Deposit_event.watch(function (err, result) {
+Deposit_event.watch(function (err, res) {
     if(!err)
     {
-        var item={
-            address:result.address,
-            blockNumber:result.blockNumber,
-            timeStamp: "to be inserted",
-            gasPrice : "to be inserted",
-            gasUsed : "to be inserted",
-            logIndex: result.logIndex,
-            transactionHash:result.transactionHash,
-            transactionIndex:result.transactionIndex,
-            event:result.event,
-            args : {
-                token: result.args.token ,
-                user :result.args.user,
-                amount :result.args.amount,
-                balance :result.args.balance,
-            },
-            txLink : result.transactionIndex,
-        };
-
-         Event.create(item,function (err, post) {
-             if(err) throw err;
-             console.log("deposit event posted "+post);
-         });
-        console.log('inside if of deposit watch with result like this '+JSON.stringify(result));
-
+        makeItem(res);
+        console.log('inside if of deposit watch with result like this '+JSON.stringify(res));
     }
     else
     {
@@ -76,7 +54,9 @@ Deposit_event.watch(function (err, result) {
 Withdraw_event.watch(function (err, result) {
     if(!err)
     {
+        makeItem(result);
         console.log('inside if of withdraw watch with result like this '+JSON.stringify(result));
+
     }
     else
     {
@@ -86,6 +66,7 @@ Withdraw_event.watch(function (err, result) {
 Cancel_event.watch(function (err, result) {
     if(!err)
     {
+        makeItem(result);
         console.log('inside if of cancel watch with result like this '+JSON.stringify(result));
     }
     else
@@ -96,6 +77,7 @@ Cancel_event.watch(function (err, result) {
 Trade_event.watch(function (err, result) {
     if(!err)
     {
+        makeItem(result);
         console.log('inside if of trade watch with result like this '+JSON.stringify(result));
     }
     else
@@ -106,6 +88,7 @@ Trade_event.watch(function (err, result) {
 Order_event.watch(function (err, result) {
     if(!err)
     {
+        makeItem(result);
         console.log('inside if of order watch with result like this '+JSON.stringify(result));
     }
     else
@@ -126,6 +109,10 @@ app.use('/returnticker', returnticker);
 var order=require('./Orders.js');
 app.use('/orders',order);
 
+// this route is get only
+var event=require('./events.js');
+app.use('/events',event);
+
 // This is post only route
 var message =require('./message.js');
 app.use('/message',message);
@@ -133,5 +120,34 @@ app.use('/message',message);
 var toporder=require('./toporders.js');
 app.use('/toporders',toporder);
 // we need an events route
+function makeItem(res)
+{
+    var item={};
+    utility.getURL('https://ropsten.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash='+res.transactionHash+'&apikey=KF9ADFTHP4WJF1GV3WHJZCTFZIN5XZUXG1',(err,response)=>{
+        if(!err){
+            var responseFromURL=JSON.parse(response);
+            console.log(responseFromURL.result);
+            item={
+                address:res.address,
+                blockNumber:res.blockNumber,
+                timeStamp: "to see later",
+                gasPrice : responseFromURL.result.gasPrice,
+                gasUsed : responseFromURL.result.gas,
+                logIndex: res.logIndex,
+                transactionHash:res.transactionHash,
+                transactionIndex:res.transactionIndex,
+                event:res.event,
+                args : res.args,
+                txLink: "http://etherscan.io/tx/"+res.transactionHash,
+            };
 
+            console.log("from make Item the item formed is "+JSON.stringify(item));
+            Event.create(item,function (err, post) {
+                if(err) throw err;
+                console.log(" event posted "+post);
+            });
+
+        }
+    });
+}
 app.listen(9000);

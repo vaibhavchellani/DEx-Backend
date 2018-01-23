@@ -29,6 +29,9 @@ module.exports = {
 { addr: '0x0000000000000000000000000000000000000000', name: 'ETH', decimals: 18 },
 { addr: '0x53825caabd3dd2287ae26a19a631b02134d18732', name: 'ESC', decimals: 18 },
 { addr: '0x53b49e0eaf4a1b9b0233ae41089cbb656dce6df7', name: 'NEW', decimals: 18 },
+//ropsten only
+
+{ addr: ' 0x9b36299714ef563af159d6cf45e43e392aa0187c', name: 'VEMS', decimals: 18 },
 
 { addr: '0x8e10f6bb9c973d61321c25a2b8d865825f4aa57b', name: '0ED', decimals: 18 },
 { addr: '0xe701cd3329057aea9d54300ddd05e41b8d74727a', name: '10MT', decimals: 10 },
@@ -702,6 +705,8 @@ module.exports = {
   defaultPair: { token: '1ST', base: 'ETH' },
   pairs: [
 { token: '0ED', base: 'ETH' },
+//ropsten
+      { token: 'VEMS', base: 'ETH' },
 { token: 'NEW', base: 'ETH' },
 { token: 'ESC', base: 'ETH' },
 { token: '10MT', base: 'ETH' },

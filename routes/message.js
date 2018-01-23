@@ -31,22 +31,13 @@ function getDivisor(tokenOrAddress) {
 
     let result = 1000000000000000000;
     const token =getToken(tokenOrAddress);
-    console.log("from get divisor , token from getToekn"+token);
+    //console.log("from get divisor , token from getToekn"+token);
     if (token && token.decimals >= 0) {
         result = Math.pow(10, token.decimals); // eslint-disable-line no-restricted-properties
     }
     return new BigNumber(result);
 }
 function formOrder(req,res){
-    /*var direction=null;
-    console.log("req.body is "+JSON.stringify(req.body));
-    if(req.body.tokenGet=='0x0000000000000000000000000000000000000000' && req.body.tokenGive!='0x0000000000000000000000000000000000000000') {
-        direction = 'sell';
-    }
-    else if(req.body.tokenGet!='0x0000000000000000000000000000000000000000' && req.body.tokenGive=='0x0000000000000000000000000000000000000000'){
-        direction='buy';
-    }
-    console.log('direction determined to be '+direction);*/
     const id = sha256(Math.random().toString());
     console.log("this is req"+JSON.stringify(req.body));
     var request=JSON.parse(req.body.message);
@@ -193,8 +184,8 @@ function getToken(token_address){
         'name',
     ]);
     //matchingTokens++;
-    console.log('matching tokens'+matchingTokens);
-    console.log('matching token found '+matchingTokens[0]+' '+matchingTokens.length+' '+matchingTokens);
+    //console.log('matching tokens'+matchingTokens);
+    //console.log('matching token found '+matchingTokens[0]+' '+matchingTokens.length+' '+matchingTokens);
     if (matchingTokens.length > 0) {
         result = matchingTokens[0];
     } /*else if (token_address.addr && JSON.stringify(Object.keys(token_address).sort()) === expectedKeys) {

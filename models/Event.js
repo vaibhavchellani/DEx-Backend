@@ -7,15 +7,10 @@ var EventSchema = new mongoose.Schema({
     gasPrice : String,
     gasUsed : String,
     logIndex: Number,
-    transactionHash:Number,
+    transactionHash:String,
     transactionIndex:Number,
     event:String,
-    args : {
-        token: String ,
-        user :String,
-        amount :String,
-        balance :String,
-    },
+    args : {},
     txLink : String,
 
 });
