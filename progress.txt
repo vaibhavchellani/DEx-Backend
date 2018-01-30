@@ -107,7 +107,7 @@ GET ON IT !
 things to do on 30th
 1. return ticker api endpoint
 2  available Volume
-3. dont send orders which are fulfilled
-4. expires amount
-
+3. dont send orders which are fulfilled (done)
+4. expires amount (done)
+5. top orders
 the token exchange isnt visible in the deposit form and withdraw form , checking it

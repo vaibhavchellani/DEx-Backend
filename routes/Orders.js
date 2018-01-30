@@ -33,14 +33,15 @@ router.get('/:nonce/:tokena/:tokenb', function(req, res, next) {
         var blockNumber=0;
         utility.getURL('https://ropsten.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey=KF9ADFTHP4WJF1GV3WHJZCTFZIN5XZUXG1',(err,response)=>{
             if(!err) {
-                blockNumber=JSON.parse(response).result;
-            }
-            else{
+                blockNumber=parseInt(JSON.parse(response).result);
+                var item={orders:post,blockNumber:blockNumber};
+                res.json(item);
 
             }
+            else{
+                throw  err;
+            }
         });
-        var item={orders:post,blockNumber:blockNumber};
-        res.json(item);
 
     })
 });
