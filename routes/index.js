@@ -5,7 +5,7 @@ var cors = require('cors');
 var bodyParser = require('body-parser');
 var Web3 = require('web3');
 var utility=require('../resources/utility');
-
+var Order=require('../models/Order.js');
 /*var web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/9c53Bai0EYh4fbE7elEE'));*/
 //this is ropsten address
 var web3 = new Web3(new Web3.providers.HttpProvider('http://ec2-13-250-15-1.ap-southeast-1.compute.amazonaws.com:8545'));
@@ -74,9 +74,11 @@ Cancel_event.watch(function (err, result) {
         console.log('inside else of cancel event with err like this '+err);
     }
 });
+
 Trade_event.watch(function (err, result) {
     if(!err)
     {
+
         makeItem(result);
         console.log('inside if of trade watch with result like this '+JSON.stringify(result));
     }
@@ -123,6 +125,7 @@ app.use('/toporders',toporder);
 function makeItem(res)
 {
     var item={};
+    //todo change this to mainnet
     utility.getURL('https://ropsten.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash='+res.transactionHash+'&apikey=KF9ADFTHP4WJF1GV3WHJZCTFZIN5XZUXG1',(err,response)=>{
         if(!err){
             var responseFromURL=JSON.parse(response);
@@ -140,7 +143,24 @@ function makeItem(res)
                 args : res.args,
                 txLink: "http://etherscan.io/tx/"+res.transactionHash,
             };
+            if(item.event=='Trade'){
+                var query={
+                    $and : [
+                        {"order.tokenGet":item.args.tokenGet},
+                        {"order.tokenGive":item.args.tokenGive},
+                        {"order.amountGet":item.args.amountGet},
+                        {"order.amountGive":item.args.amountGive},
+                    ]
+                };
+                // in args we have tokenGet , tokenGive ,amount GEt , amount give   (get address , give address are of no use to us )
+                Order.update(query,{ $set : { "amountFilled":"true" }},{ multi:true },function (err,post) {
+                    if(err) throw  err;
+                    console.log("this is post from makeItem"+post);
+                });
 
+
+
+            }
             console.log("from make Item the item formed is "+JSON.stringify(item));
             Event.create(item,function (err, post) {
                 if(err) throw err;

@@ -102,3 +102,12 @@ just have to figure out the follwing things in order
 4. getavailablevolume in /message.
 
 GET ON IT !
+ will increase the amount filled to full and when sending order will check if amount filled != amount req , should be simple enough
+
+things to do on 30th
+1. return ticker api endpoint
+2  available Volume
+3. dont send orders which are fulfilled
+4. expires amount
+
+the token exchange isnt visible in the deposit form and withdraw form , checking it

@@ -61,6 +61,7 @@ function formOrder(req,res){
             r: request.r,
             user: request.user,
         },
+        amountFilled:"0",
     };
     const sellOrder = {
         amount: -request.amountGive,
@@ -69,6 +70,7 @@ function formOrder(req,res){
             .mul(getDivisor(request.tokenGive))
             .div(getDivisor(request.tokenGet)),
         id: `${id}_sell`,
+        amountFilled:"0",
         order:{
             contractAddr: request.contractAddr,
             tokenGet: request.tokenGet,
@@ -111,15 +113,12 @@ function formOrder(req,res){
 function getOrderParams(orderIn,availableVolume) {
     var order=orderIn;
     availableVolume=new BigNumber(order.order.amountGet);
-
+    //get Available Volume from web3
 /*
     console.log('inside getOrderParams with input order as'+order);
 */
     if (order.amount >= 0) {
 
-/*
-        console.log('inside if of getOrderParams');
-*/
         order.price = new BigNumber(order.order.amountGive)
             .div(new BigNumber(order.order.amountGet))
             .mul(getDivisor(order.order.tokenGet))
@@ -139,9 +138,6 @@ function getOrderParams(orderIn,availableVolume) {
     }
     else {
 
-/*
-        console.log('inside else of getOrderParams');
-*/
         order.price = new BigNumber(order.order.amountGet)
             .div(new BigNumber(order.order.amountGive))
             .mul(getDivisor(order.order.tokenGive))
@@ -166,6 +162,7 @@ function getOrderParams(orderIn,availableVolume) {
 }
 function getAvailableVolume()
 {
+
     
 
 }
@@ -175,7 +172,6 @@ function weiToEth(wei, divisorIn) {
 }
 function getToken(token_address){
     let result;
-    console.log("got this token address from getdivisor"+token_address);
     const matchingTokens = config.tokens.filter(
         x => x.addr === token_address);
     const expectedKeys = JSON.stringify([
