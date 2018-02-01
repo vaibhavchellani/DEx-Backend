@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var Web3 = require('web3');
 var utility=require('../resources/utility');
 var Order=require('../models/Order.js');
+var returnTicker=require('../models/returnTicker.js');
 /*var web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/9c53Bai0EYh4fbE7elEE'));*/
 //this is ropsten address
 var web3 = new Web3(new Web3.providers.HttpProvider('http://ec2-13-250-15-1.ap-southeast-1.compute.amazonaws.com:8545'));
@@ -80,6 +81,7 @@ Trade_event.watch(function (err, result) {
     {
 
         makeItem(result);
+
         console.log('inside if of trade watch with result like this '+JSON.stringify(result));
     }
     else
@@ -133,7 +135,7 @@ function makeItem(res)
             item={
                 address:res.address,
                 blockNumber:res.blockNumber,
-                timeStamp: "to see later",
+                timeStamp: Date.now().toString(16),
                 gasPrice : responseFromURL.result.gasPrice,
                 gasUsed : responseFromURL.result.gas,
                 logIndex: res.logIndex,

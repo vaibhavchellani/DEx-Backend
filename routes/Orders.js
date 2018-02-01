@@ -22,7 +22,6 @@ router.get('/:nonce/:tokena/:tokenb', function(req, res, next) {
     };
     Order.find(query,function (err,post) {
         if(err) throw err;
-        console.log(post);
         var result=[];
         /*forEach(x in post)
         {
@@ -36,7 +35,6 @@ router.get('/:nonce/:tokena/:tokenb', function(req, res, next) {
                 blockNumber=parseInt(JSON.parse(response).result);
                 var item={orders:post,blockNumber:blockNumber};
                 res.json(item);
-
             }
             else{
                 throw  err;
