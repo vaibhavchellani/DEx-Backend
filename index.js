@@ -5,9 +5,9 @@ var cors = require('cors');
 var bodyParser = require('body-parser');
 const morgan = require('morgan');
 var Web3 = require('web3');
-var utility=require('../resources/utility');
-var Order=require('../models/Order.js');
-var returnTicker=require('../models/returnTicker.js');
+var utility=require('./resources/utility');
+var Order=require('./models/Order.js');
+var returnTicker=require('./models/returnTicker.js');
 /*var web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/9c53Bai0EYh4fbE7elEE'));*/
 //this is ropsten address
 var web3 = new Web3(new Web3.providers.HttpProvider('http://ec2-13-250-15-1.ap-southeast-1.compute.amazonaws.com:8545'));
@@ -31,7 +31,7 @@ mongoose.connect('mongodb://localhost:27017/exchange_api')
     .then(() =>  console.log('connection succesful'))
     .catch((err) => console.error(err));
 
-var Event=require('../models/Event.js');
+var Event=require('./models/Event.js');
 
 
 app.use(cors());
@@ -107,25 +107,25 @@ Order_event.watch(function (err, result) {
 
 
 //test route
-var products = require('./products');
+var products = require('./routes/products');
 app.use('/products', products);
 // get only route returns ticker
-var returnticker = require('./returnticker.js');
+var returnticker = require('./routes/returnticker.js');
 app.use('/returnticker', returnticker);
 
 // This route is get only , returns all pending orders
-var order=require('./Orders.js');
+var order=require('./routes/Orders.js');
 app.use('/orders',order);
 
 // this route is get only
-var event=require('./events.js');
+var event=require('./routes/events.js');
 app.use('/events',event);
 
 // This is post only route
-var message =require('./message.js');
+var message =require('./routes/message.js');
 app.use('/message',message);
 
-var toporder=require('./toporders.js');
+var toporder=require('./routes/toporders.js');
 app.use('/toporders',toporder);
 // we need an events route
 function makeItem(res)

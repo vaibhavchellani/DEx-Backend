@@ -1,15 +1,14 @@
 {
-  "name": "exchange_api",
-  "version": "1.0.0",
-  "description": "api for decentralised exchange",
+  "name": "decentralized-exchange-backend",
+  "version": "0.0.1",
+  "private": false,
+  "description": "backend for decentralized exchange",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon routes/index.js",
-    "event": "nodemon routes/events.js"
+    "start": "nodemon index.js",
+    "event": "nodemon routes/events.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bignumber.js": "^5.0.0",
     "body-parser": "^1.18.2",
@@ -23,5 +22,21 @@
   },
   "devDependencies": {
     "nodemon": "^1.14.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karachain/decentralized-exchange-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/karachain/decentralized-exchange-backend/issues"
+  },
+  "homepage": "https://github.com/karachain/decentralized-exchange-backend#readme",
+  "author": "Vaibhav Chellani <vaibhavchellani223@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "ethereum",
+    "decentralized",
+    "exchange",
+    "karachain"
+  ]
 }
