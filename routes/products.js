@@ -1,7 +1,6 @@
 //only for reference file , no use in production
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const Product = require('../models/Product.js');
 
 /* GET ALL PRODUCTS */
@@ -27,7 +26,6 @@ router.post('/', function (req, res, next) {
         prod_name: req.body.prod_name,
         prod_desc: "yo",
         prod_price: 12
-
     };
     Product.create(item, function (err, post) {
         if (err) return next(err);

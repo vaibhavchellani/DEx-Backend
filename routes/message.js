@@ -123,7 +123,7 @@ const ABI = [
 }];
 const utility = require('../utility');
 router.post('/', function (req, res, next) {
-    /*  request.get('http://api.etherscan.io/api?module=contract&action=getabi&address='+req.body.contractAddr,function (err,data) {
+    /*  request.get(config.etherscanAPI + '/api?module=contract&action=getabi&address='+req.body.contractAddr,function (err,data) {
         //const contractABI = "";
         //console.log(JSON.parse(data.body).result);
         //const ABI=JSON.parse(data.body).result;

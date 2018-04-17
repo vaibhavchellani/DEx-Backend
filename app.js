@@ -106,7 +106,7 @@ Order_event.watch(function (err, result) {
 // we need an events route
 function makeItem(res) {
     let item = {};
-    utility.getURL('https://ropsten.etherscan.io/api?module=proxy&action=eth_getTransactionByHash&txhash=' + res.transactionHash + '&apikey=KF9ADFTHP4WJF1GV3WHJZCTFZIN5XZUXG1', (err, response) => {
+    utility.getURL(config.etherscanAPI + '/api?module=proxy&action=eth_getTransactionByHash&txhash=' + res.transactionHash + '&apikey=KF9ADFTHP4WJF1GV3WHJZCTFZIN5XZUXG1', (err, response) => {
         if (!err) {
             const responseFromURL = JSON.parse(response);
             console.log(responseFromURL.result);
@@ -121,7 +121,7 @@ function makeItem(res) {
                 transactionIndex: res.transactionIndex,
                 event: res.event,
                 args: res.args,
-                txLink: "http://etherscan.io/tx/" + res.transactionHash,
+                txLink: config.etherscanUrl + "/tx/" + res.transactionHash,
             };
             if (item.event === 'Trade') {
                 const query = {

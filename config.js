@@ -6,7 +6,8 @@ module.exports = {
     port: '9000',
     ethRPC: 'https://testgeth.karachainfoundation.org',
     dbPath: 'mongodb://karachaindemo:testdemo123@ds147589.mlab.com:47589/dex-karachain',
-    etherscanUrl: 'http://etherscan.io',
+    etherscanUrl: 'http://ropsten.etherscan.io',
+    etherscanAPI: 'http://ropsten.etherscan.io',
     etherscanAPIKey: 'KF9ADFTHP4WJF1GV3WHJZCTFZIN5XZUXG1',
     tokens: [
         {addr: '0x0000000000000000000000000000000000000000', name: 'ETH', decimals: 18},

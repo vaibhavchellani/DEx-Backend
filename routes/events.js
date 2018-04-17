@@ -9,7 +9,7 @@ const web3 = new Web3(new Web3.providers.HttpProvider(config.ethRPC));
 router.get('/:nonce/:lastblock', function (req, res, next) {
     Event.find(function (err, post) {
         let blockNumber = 0;
-        utility.getURL('https://ropsten.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey=KF9ADFTHP4WJF1GV3WHJZCTFZIN5XZUXG1', (err, response) => {
+        utility.getURL(config.etherscanAPI + '/api?module=proxy&action=eth_blockNumber&apikey=KF9ADFTHP4WJF1GV3WHJZCTFZIN5XZUXG1', (err, response) => {
             if (!err) {
                 blockNumber = parseInt(JSON.parse(response).result);
                 const item = {events: post, blockNumber: blockNumber};

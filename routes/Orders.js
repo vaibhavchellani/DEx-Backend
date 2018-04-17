@@ -4,9 +4,9 @@
  */
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const Order = require('../models/Order.js');
 const utility = require('../utility');
+const config = require('../config.js');
 /* GET all orders for the given pair */
 router.get('/:nonce/:tokena/:tokenb', function (req, res, next) {
     const query = {
@@ -30,7 +30,7 @@ router.get('/:nonce/:tokena/:tokenb', function (req, res, next) {
         //todo not sure which block number to send from here , sending current blockNumber
         //todo change to api for mainnet
         let blockNumber = 0;
-        utility.getURL('https://ropsten.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey=KF9ADFTHP4WJF1GV3WHJZCTFZIN5XZUXG1', (err, response) => {
+        utility.getURL(config.etherscanAPI + '/api?module=proxy&action=eth_blockNumber&apikey=KF9ADFTHP4WJF1GV3WHJZCTFZIN5XZUXG1', (err, response) => {
             if (!err) {
                 blockNumber = parseInt(JSON.parse(response).result);
                 const item = {orders: post, blockNumber: blockNumber};
@@ -40,7 +40,6 @@ router.get('/:nonce/:tokena/:tokenb', function (req, res, next) {
                 throw  err;
             }
         });
-
     })
 });
 

@@ -43,7 +43,7 @@ module.exports = {
         function proxy(retries) {
 
             const data = contract[functionName].getData.apply(null, args);
-            let url = `https://${config.ethTestnet ? config.ethTestnet : 'api'}.etherscan.io/api?module=proxy&action=eth_Call&to=${address}&data=${data}`;
+            let url = config.etherscanAPI`/api?module=proxy&action=eth_Call&to=${address}&data=${data}`;
             if (config.etherscanAPIKey) url += `&apikey=${config.etherscanAPIKey}`;
             getURL(url, (err, body) => {
                 if (!err) {
