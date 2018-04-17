@@ -20,7 +20,7 @@ mongoose.Promise = global.Promise;
 //configure morgan to log every api call on server
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :date[clf]'));
 
-const exchangeContractAbi = web3.eth.contract(config.abi);
+const exchangeContractAbi = web3.eth.contract(config.dExContractABI);
 const exchangeContract = exchangeContractAbi.at(config.contractDExAddrs[0].addr);
 
 //Mongoose Setup

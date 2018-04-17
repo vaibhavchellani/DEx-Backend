@@ -8,16 +8,18 @@ module.exports = {
     dbPath: 'mongodb://karachaindemo:testdemo123@ds147589.mlab.com:47589/dex-karachain',
     etherscanUrl: 'http://ropsten.etherscan.io',
     etherscanAPI: 'http://ropsten.etherscan.io',
-    etherscanAPIKey: 'KF9ADFTHP4WJF1GV3WHJZCTFZIN5XZUXG1',
+    etherscanAPIKey: 'T1GSYD4D3NEAH44VQ34VHNDR9P316J9E7D',
     tokens: [
         {addr: '0x0000000000000000000000000000000000000000', name: 'ETH', decimals: 18},
-        {addr: '0x54477a3abc9355711bce1c7f150e9129090dcdce', name: 'VAIB', decimals: 18}
+        {addr: '0x54477a3abc9355711bce1c7f150e9129090dcdce', name: 'VAIB', decimals: 18},
+        {addr: '0xa431133d469a128da33a978afcc4e4b75ccb3bb4', name: 'SPC', decimals: 18}
     ],
     defaultPair: {token: 'VAIB', base: 'ETH'},
     pairs: [
-        {token: 'VAIB', base: 'ETH'}
+        {token: 'VAIB', base: 'ETH'},
+        {token: 'SPC', base: 'ETH'}
     ],
-    abi: [
+    dExContractABI: [
         {
         "constant": false,
         "inputs": [
