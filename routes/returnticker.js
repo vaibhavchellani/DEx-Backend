@@ -18,19 +18,19 @@ var router = express.Router();
 var Event = require('../models/Event.js');
 var config = require('../resources/config.js');
 const BigNumber = require('bignumber.js');
-var utility=require('../resources/utility');
+var utility = require('../resources/utility');
 
-router.get('/',function (req, res, next) {
+router.get('/', function (req, res, next) {
     // get trade events from events document
-    var trades=[];
-    var events=[];
-    Event.find({"event":"Trade"},function (err, post) {
+    var trades = [];
+    var events = [];
+    Event.find({"event": "Trade"}, function (err, post) {
         events = post;
 
 
         events.forEach((event) => {
-            var amountGive =new BigNumber(event.args.amountGive);
-            var amountGet =new BigNumber(event.args.amountGet);
+            var amountGive = new BigNumber(event.args.amountGive);
+            var amountGet = new BigNumber(event.args.amountGet);
 
             //console.log(typeof event.timeStamp+event.timeStamp+' '+parseInt(event.timeStamp,16));
             if (amountGive > 0 && amountGet > 0) {
@@ -46,7 +46,7 @@ router.get('/',function (req, res, next) {
                         .div(getDivisor(event.args.tokenGive)),
                     id: (event.blockNumber * 1000) + event.transactionIndex,
                     blockNumber: event.blockNumber,
-                    date: parseInt(event.timeStamp,16),
+                    date: parseInt(event.timeStamp, 16),
                     buyer: event.args.get,
                     seller: event.args.give,
                 });
@@ -61,7 +61,7 @@ router.get('/',function (req, res, next) {
                         .div(getDivisor(event.args.tokenGet)),
                     id: (event.blockNumber * 1000) + event.transactionIndex,
                     blockNumber: event.blockNumber,
-                    date: parseInt(event.timeStamp,16),
+                    date: parseInt(event.timeStamp, 16),
                     buyer: event.args.give,
                     seller: event.args.get,
                 });
@@ -73,13 +73,12 @@ router.get('/',function (req, res, next) {
         const firstOldPrices = {};
 
 
-
         trades.sort((a, b) => a.blockNumber - b.blockNumber);
         trades.forEach((trade) => {
             if (trade.token && trade.base && trade.base.name === 'ETH') {
                 const pair = `${trade.base.name}_${trade.token.name}`;
                 if (!tickers[pair]) {
-                    tickers[pair] = { last: undefined, percentChange: 0, baseVolume: 0, quoteVolume: 0 };
+                    tickers[pair] = {last: undefined, percentChange: 0, baseVolume: 0, quoteVolume: 0};
                 }
                 const tradeTime = trade.date;
                 const price = Number(trade.price);
@@ -99,7 +98,7 @@ router.get('/',function (req, res, next) {
                 }
             }
         });
-        console.log(' the result is '+JSON.stringify(tickers));
+        console.log(' the result is ' + JSON.stringify(tickers));
         res.send(tickers);
     });
 
@@ -108,7 +107,7 @@ router.get('/',function (req, res, next) {
 function getDivisor(tokenOrAddress) {
 
     let result = 1000000000000000000;
-    const token =getToken(tokenOrAddress);
+    const token = getToken(tokenOrAddress);
     //console.log("from get divisor , token from getToekn"+token);
     if (token && token.decimals >= 0) {
         result = Math.pow(10, token.decimals); // eslint-disable-line no-restricted-properties
@@ -116,9 +115,9 @@ function getDivisor(tokenOrAddress) {
     return new BigNumber(result);
 }
 
-function getToken(token_address){
+function getToken(token_address) {
     let result;
-    console.log("the token address is "+token_address);
+    console.log("the token address is " + token_address);
     const matchingTokens = config.tokens.filter(
         x => x.addr === token_address);
     const expectedKeys = JSON.stringify([
@@ -135,10 +134,10 @@ function getToken(token_address){
 
         result = token_address.addr;
     }
-    else{
-        console.log('not found'+JSON.stringify(token_address));
+    else {
+        console.log('not found' + JSON.stringify(token_address));
     }
-    console.log('the result is '+result);
+    console.log('the result is ' + result);
     return result;
 }
 

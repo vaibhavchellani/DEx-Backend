@@ -1,10 +1,10 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var ReturnTickerSchema = new mongoose.Schema({
-    last:Number,
-    percentChange:Number,
-    baseVolume:Number,
-    quoteVolume :Number,
+const ReturnTickerSchema = new mongoose.Schema({
+    last: Number,
+    percentChange: Number,
+    baseVolume: Number,
+    quoteVolume: Number,
 
 });
 

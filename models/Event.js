@@ -1,17 +1,17 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var EventSchema = new mongoose.Schema({
-    address:String,
+const EventSchema = new mongoose.Schema({
+    address: String,
     blockNumber: Number,
     timeStamp: String,
-    gasPrice : String,
-    gasUsed : String,
+    gasPrice: String,
+    gasUsed: String,
     logIndex: Number,
-    transactionHash:String,
-    transactionIndex:Number,
-    event:String,
-    args : {},
-    txLink : String,
+    transactionHash: String,
+    transactionIndex: Number,
+    event: String,
+    args: {},
+    txLink: String,
 
 });
 

@@ -1,11 +1,10 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var OrderSchema = new mongoose.Schema({
-
+const OrderSchema = new mongoose.Schema({
     amount: String,
     price: String,
     id: String,
-    order:{
+    order: {
         contractAddr: String,
         tokenGet: String,
         amountGet: String,
@@ -16,15 +15,15 @@ var OrderSchema = new mongoose.Schema({
         v: String,
         s: String,
         r: String,
-        user:String,
+        user: String,
     },
-    updated : { type: Date, default: Date.now },
-    submitted :{type:Date},
-    availableVolume : String,
-    ethAvailableVolume:String,
-    availableVolumeBase:String,
-    ethAvailableVolumeBase:String,
-    amountFilled:String,
+    updated: {type: Date, default: Date.now},
+    submitted: {type: Date},
+    availableVolume: String,
+    ethAvailableVolume: String,
+    availableVolumeBase: String,
+    ethAvailableVolumeBase: String,
+    amountFilled: String,
 });
 
 module.exports = mongoose.model('Order', OrderSchema);
