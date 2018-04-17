@@ -1,36 +1,19 @@
-/**
- * will give out ticker ( volume info )
- * only get route to be present
- * sample out put
- *
- *
- *ETH_ERC20{
-       last	0.0000025
-       percentChange	0
-        baseVolume	0.095
-        quoteVolume	37400
-    }
- * @params no params
- * @type {e | (() => Express) | * | createApplication}
- */
-var express = require('express');
-var router = express.Router();
-var Event = require('../models/Event.js');
-var config = require('../resources/config.js');
+const express = require('express');
+const router = express.Router();
+const Event = require('../models/Event.js');
+const config = require('../config.js');
 const BigNumber = require('bignumber.js');
-var utility = require('../resources/utility');
+const utility = require('../utility');
 
 router.get('/', function (req, res, next) {
     // get trade events from events document
-    var trades = [];
-    var events = [];
+    const trades = [];
+    let events = [];
     Event.find({"event": "Trade"}, function (err, post) {
         events = post;
-
-
         events.forEach((event) => {
-            var amountGive = new BigNumber(event.args.amountGive);
-            var amountGet = new BigNumber(event.args.amountGet);
+            const amountGive = new BigNumber(event.args.amountGive);
+            const amountGet = new BigNumber(event.args.amountGet);
 
             //console.log(typeof event.timeStamp+event.timeStamp+' '+parseInt(event.timeStamp,16));
             if (amountGive > 0 && amountGet > 0) {
@@ -66,12 +49,10 @@ router.get('/', function (req, res, next) {
                     seller: event.args.get,
                 });
             }
-
         });
         trades.sort((a, b) => b.id - a.id);
         const tickers = {};
         const firstOldPrices = {};
-
 
         trades.sort((a, b) => a.blockNumber - b.blockNumber);
         trades.forEach((trade) => {
@@ -84,7 +65,7 @@ router.get('/', function (req, res, next) {
                 const price = Number(trade.price);
                 tickers[pair].last = price;
                 if (!firstOldPrices[pair]) firstOldPrices[pair] = price;
-                if (Date.now() - tradeTime < 86400 * 1000 * 1) {
+                if (Date.now() - tradeTime < 86400 * 1000) {
                     const quoteVolume = Number(
                         utility.weiToEth(Math.abs(trade.amount), getDivisor(trade.token)));
                     const baseVolume = Number(
@@ -101,11 +82,9 @@ router.get('/', function (req, res, next) {
         console.log(' the result is ' + JSON.stringify(tickers));
         res.send(tickers);
     });
-
 });
 
 function getDivisor(tokenOrAddress) {
-
     let result = 1000000000000000000;
     const token = getToken(tokenOrAddress);
     //console.log("from get divisor , token from getToekn"+token);
@@ -120,27 +99,18 @@ function getToken(token_address) {
     console.log("the token address is " + token_address);
     const matchingTokens = config.tokens.filter(
         x => x.addr === token_address);
-    const expectedKeys = JSON.stringify([
-        'addr',
-        'decimals',
-        'name',
-    ]);
-    //matchingTokens++;
-    //console.log('matching tokens'+matchingTokens);
-    //console.log('matching token found '+matchingTokens[0]+' '+matchingTokens.length+' '+matchingTokens);
+    const expectedKeys = JSON.stringify(['addr', 'decimals', 'name',]);
+
     if (matchingTokens.length > 0) {
         result = matchingTokens[0];
     } else if (token_address.addr && JSON.stringify(Object.keys(token_address).sort()) === expectedKeys) {
-
         result = token_address.addr;
-    }
-    else {
+    } else {
         console.log('not found' + JSON.stringify(token_address));
     }
     console.log('the result is ' + result);
     return result;
 }
-
 
 //export this router to use in our index.js
 module.exports = router;

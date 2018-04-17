@@ -1,3 +1,9 @@
+<!--
+  Title: DEx-backend
+  Description: An ethereum, tokens decentralized exchange.
+  Author: Sayed Tauseef Naqvi
+  Keywords: decentralized, exchange, ethereum, ERC20, token, asset, karachain, karachainfoundation, web3js, MetaMask
+  -->
 # DEx-backend
 backend for decentralized exchange [DEx](https://github.com/karachain/DEx)
 

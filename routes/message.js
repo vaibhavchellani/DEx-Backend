@@ -1,20 +1,20 @@
-var express = require('express');
-var router = express.Router();
-var Web3 = require('web3');
-var web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/9c53Bai0EYh4fbE7elEE'));
+const express = require('express');
+const router = express.Router();
+const Web3 = require('web3');
+const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/9c53Bai0EYh4fbE7elEE'));
 const request = require('request');
 const async = require('async');
 const BigNumber = require('bignumber.js');
 const sha256 = require('js-sha256').sha256;
-var decimal = 0;
-var availableVolumeBase = 0;
-var ethAvailableVolumeBase = 0;
-var availableVolume = 0;
-var ethAvailableVolume = 0;
-var price = 0;
-var amount = 0;
-var config = require('../resources/config.js');
-var ABI = [
+const decimal = 0;
+const availableVolumeBase = 0;
+const ethAvailableVolumeBase = 0;
+const availableVolume = 0;
+const ethAvailableVolume = 0;
+const price = 0;
+const amount = 0;
+const config = require('../config.js');
+const ABI = [
     {
     "constant": true,
     "inputs": [],
@@ -121,12 +121,12 @@ var ABI = [
     "name": "Approval",
     "type": "event"
 }];
-var utility = require('../resources/utility');
+const utility = require('../utility');
 router.post('/', function (req, res, next) {
     /*  request.get('http://api.etherscan.io/api?module=contract&action=getabi&address='+req.body.contractAddr,function (err,data) {
-        //var contractABI = "";
+        //const contractABI = "";
         //console.log(JSON.parse(data.body).result);
-        //var ABI=JSON.parse(data.body).result;
+        //const ABI=JSON.parse(data.body).result;
         //console.log(ABI.toArray());
     });*/
     formOrder(req, res);
@@ -147,7 +147,7 @@ function getDivisor(tokenOrAddress) {
 function formOrder(req, res) {
     const id = sha256(Math.random().toString());
     console.log("this is req" + JSON.stringify(req.body));
-    var request = JSON.parse(req.body.message);
+    const request = JSON.parse(req.body.message);
     const buyOrder = {
         amount: request.amountGet,
         price: new BigNumber(parseInt(request.amountGive))
@@ -193,9 +193,8 @@ function formOrder(req, res) {
         },
 
     };
-    var newOrder = {};
-    newOrder = getOrderParams(buyOrder, 100);
-    var Order = require('../models/Order');
+    let newOrder = getOrderParams(buyOrder, 100);
+    const Order = require('../models/Order');
     /*
         console.log('Buy order sent from FormOrder');
     */
@@ -219,7 +218,7 @@ function formOrder(req, res) {
 }
 
 function getOrderParams(orderIn, availableVolume) {
-    var order = orderIn;
+    const order = orderIn;
     availableVolume = new BigNumber(order.order.amountGet);
     //get Available Volume from web3
     /*

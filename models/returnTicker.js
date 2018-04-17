@@ -5,7 +5,6 @@ const ReturnTickerSchema = new mongoose.Schema({
     percentChange: Number,
     baseVolume: Number,
     quoteVolume: Number,
-
 });
 
 module.exports = mongoose.model('ReturnTicker', ReturnTickerSchema);

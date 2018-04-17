@@ -1,8 +1,8 @@
 //only for reference file , no use in production
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var Product = require('../models/Product.js');
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const Product = require('../models/Product.js');
 
 /* GET ALL PRODUCTS */
 router.get('/', function (req, res, next) {
@@ -23,7 +23,7 @@ router.get('/:id', function (req, res, next) {
 /* SAVE PRODUCT */
 router.post('/', function (req, res, next) {
     console.log(req.body.prod_name);
-    var item = {
+    const item = {
         prod_name: req.body.prod_name,
         prod_desc: "yo",
         prod_price: 12

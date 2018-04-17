@@ -12,7 +12,6 @@ const EventSchema = new mongoose.Schema({
     event: String,
     args: {},
     txLink: String,
-
 });
 
 module.exports = mongoose.model('Event', EventSchema);

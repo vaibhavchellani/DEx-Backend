@@ -1,11 +1,10 @@
 const request = require('request');
 const Web3 = require('web3');
-const web3 = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/9c53Bai0EYh4fbE7elEE'));
+const config = require('./config.js');
+const web3 = new Web3(new Web3.providers.HttpProvider(config.ethRPC));
 const SolidityFunction = require('web3/lib/web3/function.js');
-const config = require('../resources/config.js');
 
 module.exports = {
-
     weiToEth: function (wei, divisorIn) {
         const divisor = !divisorIn ? 1000000000000000000 : divisorIn;
         return (wei / divisor).toFixed(3);
@@ -40,7 +39,6 @@ module.exports = {
         })
     },
 
-
     call: function (web3In, contract, address, functionName, args, callback) {
         function proxy(retries) {
 
@@ -58,17 +56,13 @@ module.exports = {
                     } catch (errJson) {
                         if (retries > 0) {
                             setTimeout(() => {
-                                    proxy(retries - 1
-                                    )
-                                },
-                                1000
-                            )
+                                proxy(retries - 1)
+                            }, 1000)
                         } else {
                             callback(err, undefined);
                         }
                     }
-                }
-                else {
+                } else {
                     callback(err, undefined);
                 }
             })
@@ -86,8 +80,7 @@ module.exports = {
                     } catch (errJson) {
                         proxy(1);
                     }
-                }
-                else {
+                } else {
                     proxy(1);
                 }
             })

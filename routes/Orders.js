@@ -2,14 +2,14 @@
  *
  * for getting all orders for a particular token pair
  */
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var Order = require('../models/Order.js');
-var utility = require('../resources/utility');
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const Order = require('../models/Order.js');
+const utility = require('../utility');
 /* GET all orders for the given pair */
 router.get('/:nonce/:tokena/:tokenb', function (req, res, next) {
-    var query = {
+    const query = {
         $and: [{
             $or: [
                 {$and: [{"order.tokenGet": req.params.tokena}, {"order.tokenGive": req.params.tokenb}]},
@@ -22,18 +22,18 @@ router.get('/:nonce/:tokena/:tokenb', function (req, res, next) {
     };
     Order.find(query, function (err, post) {
         if (err) throw err;
-        var result = [];
+        const result = [];
         /*forEach(x in post)
         {
             result.push()
         }*/
         //todo not sure which block number to send from here , sending current blockNumber
         //todo change to api for mainnet
-        var blockNumber = 0;
+        let blockNumber = 0;
         utility.getURL('https://ropsten.etherscan.io/api?module=proxy&action=eth_blockNumber&apikey=KF9ADFTHP4WJF1GV3WHJZCTFZIN5XZUXG1', (err, response) => {
             if (!err) {
                 blockNumber = parseInt(JSON.parse(response).result);
-                var item = {orders: post, blockNumber: blockNumber};
+                const item = {orders: post, blockNumber: blockNumber};
                 res.json(item);
             }
             else {
