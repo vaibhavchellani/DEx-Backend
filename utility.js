@@ -88,4 +88,35 @@ module.exports = {
             proxy(1);
         }
     },
+
+
+    blockNumber : function blockNumber(web3, callback) {
+        function proxy() {
+          let url =
+                    `https://${
+                        config.ethTestnet ? config.ethTestnet : 'api'
+                        }.etherscan.io/api?module=proxy&action=eth_BlockNumber`;
+          if (config.etherscanAPIKey) url += `&apikey=${config.etherscanAPIKey}`;
+          utility.getURL(url, (err, body) => {
+            if (!err) {
+              const result = JSON.parse(body);
+              callback(undefined, Number(utility.hexToDec(result.result)));
+            } else {
+              callback(err, undefined);
+            }
+          });
+        }
+        if (web3.currentProvider) {
+          web3.eth.getBlockNumber((err, result) => {
+            if (!err) {
+              callback(undefined, Number(result));
+            } else {
+              proxy();
+            }
+          });
+        } else {
+          proxy();
+        }
+      }
+
 };
