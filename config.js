@@ -1,6 +1,10 @@
 module.exports = {
   contractDExAddrs: [
     {
+      addr: "0x9fad94a68efac5d15d25ccc413aede563f23095a",
+      info: "Deployed 07/26/2018"
+    },
+    {
       addr: "0x0def463933c4e286c79f517d7aa56c43bc25323b",
       info: "Deployed 07/24/2018"
     },
@@ -34,11 +38,11 @@ module.exports = {
     //   name: "MTX",
     //   decimals: 18
     // },
-    {
-      addr: "0x343461c74133e3fa476dbbc614a87473270a226c",
-      name: "MTX",
-      decimals: 18
-    },
+    // {
+    //   addr: "0x343461c74133e3fa476dbbc614a87473270a226c",
+    //   name: "MTX",
+    //   decimals: 18
+    // },
     {
       addr: "0xbdb2e5e880f4ac4bfee2cc8c371020f7ca68b549",
       name: "XLM",

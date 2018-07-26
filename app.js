@@ -93,7 +93,7 @@ Cancel_event.watch(function(err, result) {
 Trade_event.watch(function(err, result) {
   if (!err) {
     makeItem(result);
-
+    console.log("yay ! trade happened");
     console.log(
       "inside if of trade watch with result like this " + JSON.stringify(result)
     );
