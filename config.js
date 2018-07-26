@@ -1,7 +1,7 @@
 module.exports = {
   contractDExAddrs: [
     {
-      addr: "0x9fad94a68efac5d15d25ccc413aede563f23095a",
+      addr: "0x9fd34ab744cf3e73bae24991749dd2e7b64c5e17",
       info: "Deployed 07/26/2018"
     },
     {

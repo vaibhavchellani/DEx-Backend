@@ -9,6 +9,8 @@ const Event = require("./models/Event.js");
 const utility = require("./utility");
 const Order = require("./models/Order.js");
 const config = require("./config");
+const BigNumber = require("bignumber.js");
+
 const web3 = new Web3(new Web3.providers.HttpProvider(config.ethRPC));
 
 app.use(cors());
@@ -18,11 +20,11 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 mongoose.Promise = global.Promise;
 
 //configure morgan to log every api call on server
-app.use(
-  morgan(
-    ":method :url :status :res[content-length] - :response-time ms :date[clf]"
-  )
-);
+// app.use(
+//   morgan(
+//     ":method :url :status :res[content-length] - :response-time ms :date[clf]"
+//   )
+// );
 
 const exchangeContractAbi = web3.eth.contract(config.dExContractABI);
 const exchangeContract = exchangeContractAbi.at(
@@ -104,6 +106,8 @@ Trade_event.watch(function(err, result) {
 Order_event.watch(function(err, result) {
   if (!err) {
     makeItem(result);
+    console.log("order came with this ");
+    console.log(result);
     console.log(
       "inside if of order watch with result like this " + JSON.stringify(result)
     );
@@ -154,6 +158,43 @@ function makeItem(res) {
             function(err, post) {
               if (err) throw err;
               console.log("this is post from makeItem" + post);
+            }
+          );
+        }
+
+        if (item.event === "Order") {
+          console.log("order aaya paaji");
+          console.log("type is ");
+          console.log(typeof item.args.amountGet);
+          console.log(typeof Number(item.args.amountGet));
+          data = {
+            contractAddr: config.contractDExAddrs[0].addr,
+            tokenGet: item.args.tokenGet,
+            amountGet: Number(item.args.amountGet),
+            tokenGive: item.args.tokenGive,
+            amountGive: Number(item.args.amountGive),
+            expires: Number(item.args.expires),
+            nonce: Number(item.args.nonce),
+            v: 0,
+            r:
+              "0x5f99b29734b0cb37f322df69ae14deff6971940e9b34a45724f7a5979d735b87",
+            s:
+              "0x356d54416376de440e3e6fb5015940695a7aa1a76b70ff4104df565f3b1a46d4",
+            user: item.args.user
+          };
+          console.log("data ban gya paaji " + JSON.stringify(data));
+
+          utility.postURL(
+            config.proxyAPI + "/message",
+            { message: data },
+            function(error, reply) {
+              if (!error) {
+                console.log("sab changa paaji");
+                console.log(reply);
+              } else {
+                console.log("paaji fuck ho gya !");
+                console.log(error);
+              }
             }
           );
         }
