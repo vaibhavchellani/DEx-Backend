@@ -4,7 +4,7 @@ module.exports = {
     ],
     ethTestnet: true,
     port: '9000',
-    ethRPC: 'https://testgeth.karachainfoundation.org',
+    ethRPC: 'https://ropsten.infura.io/TJSJL5u9maRXnaZrSvnv',
     dbPath: 'mongodb://karachaindemo:testdemo123@ds147589.mlab.com:47589/dex-karachain',
     etherscanUrl: 'http://ropsten.etherscan.io',
     etherscanAPI: 'http://ropsten.etherscan.io',
@@ -12,12 +12,19 @@ module.exports = {
     tokens: [
         {addr: '0x0000000000000000000000000000000000000000', name: 'ETH', decimals: 18},
         {addr: '0x54477a3abc9355711bce1c7f150e9129090dcdce', name: 'VAIB', decimals: 18},
-        {addr: '0xa431133d469a128da33a978afcc4e4b75ccb3bb4', name: 'SPC', decimals: 18}
+        {addr: '0xa431133d469a128da33a978afcc4e4b75ccb3bb4', name: 'SPC', decimals: 18},
+        {
+            addr: '0x61d43db420fbdad90476887c30df9e4ec39be7a0',
+            name: 'MTX',
+            decimals: 18,
+        }
     ],
     defaultPair: {token: 'VAIB', base: 'ETH'},
     pairs: [
         {token: 'VAIB', base: 'ETH'},
-        {token: 'SPC', base: 'ETH'}
+        {token: 'SPC', base: 'ETH'},
+        {token: 'MTX', base: 'ETH'}
+
     ],
     dExContractABI: [
         {
