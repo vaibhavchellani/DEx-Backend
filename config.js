@@ -1,8 +1,8 @@
 module.exports = {
   contractDExAddrs: [
     {
-      addr: "0x9fd34ab744cf3e73bae24991749dd2e7b64c5e17",
-      info: "Deployed 07/26/2018"
+      addr: "0x71ac6b405b00eef22a88709ef11003e383d80a2a",
+      info: "Deployed 07/31/2018"
     },
     {
       addr: "0x0def463933c4e286c79f517d7aa56c43bc25323b",
@@ -29,31 +29,45 @@ module.exports = {
       decimals: 18
     },
     {
-      addr: "0x54477a3abc9355711bce1c7f150e9129090dcdce",
-      name: "VAIB",
+      addr: "0x4a20f23b335127d7d5a06804f45d00180207771d",
+      name: "REP",
       decimals: 18
     },
-    // {
-    //   addr: "0x61d43db420fbdad90476887c30df9e4ec39be7a0",
-    //   name: "MTX",
-    //   decimals: 18
-    // },
-    // {
-    //   addr: "0x343461c74133e3fa476dbbc614a87473270a226c",
-    //   name: "MTX",
-    //   decimals: 18
-    // },
     {
-      addr: "0xbdb2e5e880f4ac4bfee2cc8c371020f7ca68b549",
+      addr: "0xd52f642078fd05d22853c440026fdf8ab9e6e33e",
+      name: "ZRX",
+      decimals: 18
+    },
+    {
+      addr: "0x046093929ebaa4887c795d065d53639a552f89c5",
+      name: "OMG",
+      decimals: 18
+    },
+    {
+      addr: "0xec5589bb3bc66b492f41ee41f8516a152dc2855d",
+      name: "BNB",
+      decimals: 18
+    },
+    {
+      addr: "0x654a4c978a3ca445fe9eea6cf5a50b31da492e93",
       name: "XLM",
+      decimals: 18
+    },
+    {
+      addr: "0x48b956f2a62471ffc25ed601f7fb94913fb0755b",
+      name: "ZIL",
       decimals: 18
     }
   ],
   defaultPair: { token: "VAIB", base: "ETH" },
   pairs: [
     { token: "VAIB", base: "ETH" },
-    { token: "MTX", base: "ETH" },
-    { token: "XLM", base: "ETH" }
+    { token: "REP", base: "ETH" },
+    { token: "ZRX", base: "ETH" },
+    { token: "OMG", base: "ETH" },
+    { token: "BNB", base: "ETH" },
+    { token: "XLM", base: "ETH" },
+    { token: "ZIL", base: "ETH" }
   ],
   dExContractABI: [
     {
